@@ -3,6 +3,7 @@ import { Header } from "./components/Header"
 import { Tabs } from "./components/Tabs"
 import { TodoInput } from "./components/TodoInput"
 import { TodoList } from "./components/TodoList"
+import axios from "axios"
 
 function App() {
 
@@ -11,45 +12,39 @@ function App() {
   const [selectedTab, setSelectedTab] = useState('Open')
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/todos/')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setTodos(data)
+    axios.get('http://localhost:8000/api/todos/')
+      .then(res => {
+        console.log(res.data)
+        setTodos(res.data)
       })
-      .catch(err => console.error(err))
+      .catch(err => console.log(err))
   }, [])
 
   function handleAddTodo(newTodo) {
-    fetch('http://localhost:8000/api/todos/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input: newTodo, complete: false })
+    axios.post('http://localhost:8000/api/todos/', {
+      input : newTodo,
+      complete : false
     })
-      .then(res => res.json())
-      .then(todo => setTodos(prev => [...prev, todo]))
+      .then(res => setTodos(prev => [...prev, res.data]))
       .catch(err => console.error(err))
   }
 
   function handleCompletedTodo(id) {
     const todo = todos.find(t => t.id === id)
     if (!todo) return
-    fetch(`http://localhost:8000/api/todos/${id}/`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ complete: true })
+    axios.patch(`http://localhost:8000/api/todos/${id}/`, {
+      complete : true
     })
-      .then(res => res.json())
-      .then(updatedTodo => {
+      .then(res => {
+        const updatedTodo = res.data
         setTodos(prev => prev.map(t => t.id === updatedTodo.id ? updatedTodo : t))
       })
-      .catch(err => console.error(err))
+      .catch(err => console.err(err))
   }
 
   function handleDeleteTodo(id) {
-    fetch(`http://localhost:8000/api/todos/${id}/`, {
-      method: 'DELETE'
-    })
+    console.log(id)
+    axios.delete(`http://localhost:8000/api/todos/${id}/`)
       .then(() => {
         setTodos(prev => prev.filter(t => t.id !== id))
       })
