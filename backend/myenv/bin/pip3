@@ -1,4 +1,4 @@
-#!/home/mecebeci/Documents/Coding/Reactjs/todo-app/backend/myenv/bin/python3
+#!/home/mecebeci/Documents/Coding/Web/todo-app/backend/myenv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

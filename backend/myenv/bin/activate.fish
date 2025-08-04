@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/mecebeci/Documents/Coding/Reactjs/todo-app/backend/myenv
+set -gx VIRTUAL_ENV /home/mecebeci/Documents/Coding/Web/todo-app/backend/myenv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
